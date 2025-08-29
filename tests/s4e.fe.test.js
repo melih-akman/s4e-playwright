@@ -39,3 +39,19 @@ test('Pricing page has plan wizard button that opens scheduling popover', async 
   await page.click('button:has-text("Plan Wizard")');
   await expect(page.getByRole('dialog')).toBeVisible();
 });
+
+test('CTEM Features section is visible on homepage', async ({ page }) => {
+  await page.goto(process.env.S4E_BASE_URL + '/');
+  await expect(page.getByRole('heading', { name: 'CTEM Features' })).toBeVisible();
+  const slide = page.getByRole('heading', { name: 'Effortless Security Automation' }).locator('..').locator('..').locator('..');//SOR
+  await expect(slide).toBeVisible();
+});
+
+test('Check Out More Resources section is visible with View button', async ({ page }) => {
+  await page.goto(process.env.S4E_BASE_URL + '/');
+  await expect(page.getByRole('heading', { name: 'Check Out More Resources' })).toBeVisible();
+  const resourcesSection = page.getByRole('heading', { name: 'Check Out More Resources' }).locator('xpath=ancestor::section').locator('..').locator('..');
+  const slider = resourcesSection.locator('.slick-slider');
+  await expect(slider.locator('.slick-slide').first()).toBeVisible();
+  await expect(slider.locator('p:has-text("View")').first()).toBeVisible();
+});
