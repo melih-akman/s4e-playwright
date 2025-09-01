@@ -27,10 +27,18 @@ test('2.Pricing page has accessible yearly and monthly switch', async ({ page })
   await expect(page.getByRole('heading', { name: 'Pay monthly' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Pay yearly' })).toBeVisible();
   await page.click('text=Pay yearly');
-  const switchDiv = page.locator('.css-rcvkex > div ');
-  await expect(switchDiv).toHaveAttribute('style', /transform: translateX\(78px\)/);
+  const expertCard = page.locator('div.MuiCard-root:has-text("Expert")');
+  await expect(expertCard).toBeVisible();
+  let priceElement = expertCard.locator('[itemprop="price"]');
+  await expect(priceElement).toHaveText('190');
+  const yearlyIndicator = expertCard.locator('[itemprop="availabilityEnds"]');
+  await expect(yearlyIndicator).toHaveText('/y');
   await page.click('text=Pay monthly');
-  await expect(switchDiv).toHaveAttribute('style', /transform: translateX\(-125px\)/);
+  await expect(expertCard).toBeVisible();
+  priceElement = expertCard.locator('[itemprop="price"]');
+  await expect(priceElement).toHaveText('19');
+  const monthlyIndicator = expertCard.locator('[itemprop="availabilityEnds"]');
+  await expect(monthlyIndicator).toHaveText('/mo');
 });
 
 test('3.Pricing page has plan wizard button that opens scheduling popover', async ({ page }) => {
